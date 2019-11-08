@@ -1,4 +1,4 @@
-# pdf-signature
+# wps-viewer-service
 
 ## Project setup
 ```

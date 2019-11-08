@@ -1,28 +1,42 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <div id="wps-viewer-service" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  name: 'wps-viewer-service',
+  methods: {
+    /**
+     * 重置
+     */
+    _reload ({ token, wpsUrl }) {
+      let wps_inc = WPS.config({
+        wpsUrl,
+        mount: document.querySelector('#wps-viewer-service')
+      })
+      wps_inc.setToken({ token })
+    }
+  },
+  created () {
+    window.addEventListener('message', ({ data }) => {
+      if (data.type === 'WPS_VIEWER_SERVICE') {
+        this._reload(event.data)
+      }
+    }, false)
   }
 }
 </script>
 
-<style lang="less">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+  html, body{
+    width: 100%;
+    height: 100%;
+  }
+  #wps-viewer-service {
+    height: 100%;
+    iframe {
+      width: 100%;
+      height: 100%;
+    }
+  }
 </style>
